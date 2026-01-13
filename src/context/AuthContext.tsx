@@ -28,7 +28,7 @@ interface RegisterData {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 // Fallback para demo (quando Supabase não está configurado)
-const isDemoMode = !import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL.includes('your-project')
+const isDemoMode = !(import.meta.env.VITE_SUPABASE_URL as string) || (import.meta.env.VITE_SUPABASE_URL as string).includes('your-project')
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)

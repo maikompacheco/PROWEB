@@ -1,5 +1,5 @@
 import React, { createContext, useState, useCallback, ReactNode } from 'react'
-import { Coach, AthleteInsights, CoachLicense, CoachPermissions } from '../types'
+import { Coach, AthleteInsights, CoachLicense, CoachPermissions, LicenseStatus } from '../types'
 
 interface CoachContextType {
     coaches: Coach[]
@@ -142,12 +142,17 @@ export function CoachProvider({ children }: { children: ReactNode }) {
     const revokeLicense = useCallback(async (licenseId: string) => {
         setError(null)
         try {
-            setCoaches(prev => prev.map(c => ({
-                ...c,
-                licenses: c.licenses?.map(l =>
-                    l.id === licenseId ? { ...l, status: 'revoked' } : l
-                )
-            })))
+            setCoaches(prev => prev.map(c => {
+                if (!c.licenses) return c
+                return {
+                    ...c,
+                    licenses: c.licenses.map(l =>
+                        l.id === licenseId
+                            ? { ...l, status: 'revogada' as LicenseStatus }
+                            : l
+                    ) as CoachLicense[]
+                } as Coach
+            }))
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erro ao revogar licença')
         }
@@ -156,7 +161,7 @@ export function CoachProvider({ children }: { children: ReactNode }) {
     const getValidLicenses = useCallback((coachId: string): CoachLicense[] => {
         const today = new Date().toISOString().split('T')[0]
         const coach = coaches.find(c => c.id === coachId)
-        return coach?.licenses?.filter(l => l.status === 'valid' && l.expiryDate >= today) || []
+        return coach?.licenses?.filter(l => l.status === 'valida' && l.expiryDate >= today) || []
     }, [coaches])
 
     // ======= PERMISSIONS =======
@@ -204,6 +209,7 @@ export function CoachProvider({ children }: { children: ReactNode }) {
                 const newInsights: AthleteInsights = {
                     id: `insight_${Date.now()}`,
                     athleteId,
+                    seasonYear: new Date().getFullYear(),
                     technicalStrengths: [],
                     improvementAreas: [],
                     technicalNotes: '',
