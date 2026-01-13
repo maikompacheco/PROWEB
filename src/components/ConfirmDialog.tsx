@@ -1,0 +1,68 @@
+import React from 'react'
+import { useTheme } from '../context/ThemeContext'
+import Button from './Button'
+
+interface ConfirmDialogProps {
+    isOpen: boolean
+    title: string
+    message: string
+    confirmText?: string
+    cancelText?: string
+    isDangerous?: boolean // true para ações destrutivas (remover)
+    isLoading?: boolean
+    onConfirm: () => void | Promise<void>
+    onCancel: () => void
+}
+
+export default function ConfirmDialog({
+    isOpen,
+    title,
+    message,
+    confirmText = 'Confirmar',
+    cancelText = 'Cancelar',
+    isDangerous = false,
+    isLoading = false,
+    onConfirm,
+    onCancel
+}: ConfirmDialogProps) {
+    const { theme } = useTheme()
+
+    if (!isOpen) return null
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                onClick={onCancel}
+            />
+            <div className={`relative rounded-2xl border p-6 sm:p-8 max-w-md w-full shadow-2xl ${theme === 'dark' ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200'}`}>
+                <h2 className={`text-2xl font-bold mb-3 ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
+                    {title}
+                </h2>
+                <p className={`mb-6 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+                    {message}
+                </p>
+
+                <div className="flex gap-3 justify-end">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={onCancel}
+                        disabled={isLoading}
+                    >
+                        {cancelText}
+                    </Button>
+                    <Button
+                        variant={isDangerous ? 'primary' : 'primary'}
+                        size="sm"
+                        onClick={onConfirm}
+                        isLoading={isLoading}
+                        className={isDangerous ? 'bg-red-600 hover:bg-red-700 active:bg-red-800' : ''}
+                    >
+                        {confirmText}
+                    </Button>
+                </div>
+            </div>
+        </div>
+    )
+}
