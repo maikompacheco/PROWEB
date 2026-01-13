@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTheme } from '../context/ThemeContext'
 import Button from './Button'
 
@@ -8,20 +8,10 @@ interface ConfirmDialogProps {
     message: string
     confirmText?: string
     cancelText?: string
-    isDangerous?: boolean // true para ações destrutivas (remover)
+    isDangerous?: boolean
     isLoading?: boolean
-    icon?: 'warning' | 'error' | 'success' | 'info' | 'question'
     onConfirm: () => void | Promise<void>
     onCancel: () => void
-    closeOnBackdropClick?: boolean
-}
-
-const iconMap = {
-    warning: '⚠️',
-    error: '❌',
-    success: '✅',
-    info: 'ℹ️',
-    question: '❓'
 }
 
 export default function ConfirmDialog({
@@ -32,29 +22,10 @@ export default function ConfirmDialog({
     cancelText = 'Cancelar',
     isDangerous = false,
     isLoading = false,
-    icon = 'question',
     onConfirm,
-    onCancel,
-    closeOnBackdropClick = true
+    onCancel
 }: ConfirmDialogProps) {
     const { theme } = useTheme()
-
-    // Fecha com ESC key
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && isOpen) {
-                onCancel()
-            }
-        }
-
-        if (isOpen) {
-            document.addEventListener('keydown', handleKeyDown)
-        }
-
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown)
-        }
-    }, [isOpen, onCancel])
 
     if (!isOpen) return null
 
@@ -70,25 +41,17 @@ export default function ConfirmDialog({
         <div className="dialog-overlay flex items-center justify-center p-4">
             <div
                 className="absolute inset-0"
-                onClick={() => closeOnBackdropClick && onCancel()}
+                onClick={onCancel}
             />
-            <div className={`dialog-content ${isDangerous ? 'border-red-500/50' : ''}`}>
-                {/* Icon */}
-                <div className="text-4xl mb-4 text-center">
-                    {iconMap[icon]}
-                </div>
-
-                {/* Title */}
-                <h2 className={`text-xl font-bold mb-3 text-center ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
+            <div className={`dialog-content max-w-sm w-full ${isDangerous ? 'border-red-500/30' : ''}`}>
+                <h2 className={`text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
                     {title}
                 </h2>
 
-                {/* Message */}
-                <p className={`mb-6 text-center ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+                <p className={`text-sm mb-6 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
                     {message}
                 </p>
 
-                {/* Buttons */}
                 <div className="flex gap-3 justify-end">
                     <Button
                         variant="outline"
@@ -99,7 +62,7 @@ export default function ConfirmDialog({
                         {cancelText}
                     </Button>
                     <Button
-                        variant={isDangerous ? 'primary' : 'primary'}
+                        variant="primary"
                         size="sm"
                         onClick={handleConfirm}
                         isLoading={isLoading}
@@ -108,11 +71,6 @@ export default function ConfirmDialog({
                         {confirmText}
                     </Button>
                 </div>
-
-                {/* Hint */}
-                <p className={`text-xs mt-4 text-center ${theme === 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>
-                    Pressione <kbd className="px-2 py-1 bg-slate-600 text-white rounded text-xs">ESC</kbd> para cancelar
-                </p>
             </div>
         </div>
     )

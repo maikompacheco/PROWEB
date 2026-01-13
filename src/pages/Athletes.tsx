@@ -217,11 +217,12 @@ export default function Athletes() {
 
       <ConfirmDialog
         isOpen={deleteConfirm.isOpen}
-        title="Remover Atleta"
-        message={`Tem certeza que deseja remover "${athleteToDelete?.name}"? Esta ação não pode ser desfeita.`}
+        title="Remover atleta?"
+        message="Essa ação removerá o atleta permanentemente."
         confirmText="Remover"
         cancelText="Cancelar"
         isDangerous={true}
+        isLoading={isLoading}
         onConfirm={handleDelete}
         onCancel={() => setDeleteConfirm({ isOpen: false, athleteId: null })}
       />
