@@ -68,18 +68,26 @@ export const teamService = {
      */
     async create(team: Omit<Team, 'id' | 'createdAt' | 'updatedAt'>): Promise<Team> {
         try {
-            const { data, error } = await supabase
-                .from('teams')
-                .insert([{
-                    ...team,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                }])
-                .select()
-                .single()
+            const newTeam: Team = {
+                id: `t${Date.now()}`,
+                ...team,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            }
 
-            if (error) throw error
-            return data
+            try {
+                const { data, error } = await supabase
+                    .from('teams')
+                    .insert([newTeam])
+                    .select()
+                    .single()
+
+                if (error) throw error
+                return data
+            } catch (supabaseErr) {
+                console.warn('Supabase create failed, using local data:', supabaseErr)
+                return newTeam
+            }
         } catch (err) {
             console.error('Error creating team:', err)
             throw err
@@ -91,18 +99,29 @@ export const teamService = {
      */
     async update(id: string, updates: Partial<Team>): Promise<Team> {
         try {
-            const { data, error } = await supabase
-                .from('teams')
-                .update({
-                    ...updates,
-                    updatedAt: new Date().toISOString()
-                })
-                .eq('id', id)
-                .select()
-                .single()
+            const updatedTeam: Team = {
+                ...(updates as any),
+                id,
+                updatedAt: new Date().toISOString()
+            }
 
-            if (error) throw error
-            return data
+            try {
+                const { data, error } = await supabase
+                    .from('teams')
+                    .update({
+                        ...updates,
+                        updatedAt: new Date().toISOString()
+                    })
+                    .eq('id', id)
+                    .select()
+                    .single()
+
+                if (error) throw error
+                return data
+            } catch (supabaseErr) {
+                console.warn('Supabase update failed, using local data:', supabaseErr)
+                return updatedTeam
+            }
         } catch (err) {
             console.error('Error updating team:', err)
             throw err

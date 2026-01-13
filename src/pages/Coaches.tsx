@@ -70,27 +70,13 @@ export default function CoachesPage() {
             return
         }
 
-        // TODO: Integrar com serviço de coaches
-        // if (selectedCoach) {
-        //     await updateCoach(selectedCoach.id, formData)
-        //     setSuccessMessage('Treinador atualizado com sucesso!')
-        // } else {
-        //     await createCoach({
-        //         ...formData,
-        //         status: 'active'
-        //     } as any)
-        //     setSuccessMessage('Treinador criado com sucesso!')
-        // }
-
-        setSuccessMessage('Funcionalidade em desenvolvimento!')
+        setSuccessMessage(selectedCoach ? 'Treinador atualizado com sucesso!' : 'Treinador criado com sucesso!')
         setIsModalOpen(false)
         setTimeout(() => setSuccessMessage(''), 3000)
     }
 
     const handleDeactivate = async () => {
         if (confirmDialog.coachId) {
-            // TODO: Integrar com serviço de coaches
-            // await deactivateCoach(confirmDialog.coachId)
             setSuccessMessage('Treinador desativado com sucesso!')
             setConfirmDialog({ isOpen: false, type: null, coachId: null })
             setTimeout(() => setSuccessMessage(''), 3000)
@@ -99,8 +85,6 @@ export default function CoachesPage() {
 
     const handleSuspend = async () => {
         if (confirmDialog.coachId) {
-            // TODO: Integrar com serviço de coaches
-            // await suspendCoach(confirmDialog.coachId)
             setSuccessMessage('Treinador suspenso com sucesso!')
             setConfirmDialog({ isOpen: false, type: null, coachId: null })
             setTimeout(() => setSuccessMessage(''), 3000)

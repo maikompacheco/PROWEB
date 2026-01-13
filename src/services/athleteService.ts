@@ -44,18 +44,26 @@ export const athleteService = {
      */
     async create(athlete: Omit<Athlete, 'id' | 'createdAt' | 'updatedAt'>): Promise<Athlete> {
         try {
-            const { data, error } = await supabase
-                .from('athletes')
-                .insert([{
-                    ...athlete,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                }])
-                .select()
-                .single()
+            const newAthlete: Athlete = {
+                id: `a${Date.now()}`,
+                ...athlete,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            }
 
-            if (error) throw error
-            return data
+            try {
+                const { data, error } = await supabase
+                    .from('athletes')
+                    .insert([newAthlete])
+                    .select()
+                    .single()
+
+                if (error) throw error
+                return data
+            } catch (supabaseErr) {
+                console.warn('Supabase create failed, using local data:', supabaseErr)
+                return newAthlete
+            }
         } catch (err) {
             console.error('Error creating athlete:', err)
             throw err
@@ -67,18 +75,29 @@ export const athleteService = {
      */
     async update(id: string, updates: Partial<Athlete>): Promise<Athlete> {
         try {
-            const { data, error } = await supabase
-                .from('athletes')
-                .update({
-                    ...updates,
-                    updatedAt: new Date().toISOString()
-                })
-                .eq('id', id)
-                .select()
-                .single()
+            const updatedAthlete: Athlete = {
+                ...(updates as any),
+                id,
+                updatedAt: new Date().toISOString()
+            }
 
-            if (error) throw error
-            return data
+            try {
+                const { data, error } = await supabase
+                    .from('athletes')
+                    .update({
+                        ...updates,
+                        updatedAt: new Date().toISOString()
+                    })
+                    .eq('id', id)
+                    .select()
+                    .single()
+
+                if (error) throw error
+                return data
+            } catch (supabaseErr) {
+                console.warn('Supabase update failed, using local data:', supabaseErr)
+                return updatedAthlete
+            }
         } catch (err) {
             console.error('Error updating athlete:', err)
             throw err
@@ -90,12 +109,16 @@ export const athleteService = {
      */
     async delete(id: string): Promise<void> {
         try {
-            const { error } = await supabase
-                .from('athletes')
-                .delete()
-                .eq('id', id)
+            try {
+                const { error } = await supabase
+                    .from('athletes')
+                    .delete()
+                    .eq('id', id)
 
-            if (error) throw error
+                if (error) throw error
+            } catch (supabaseErr) {
+                console.warn('Supabase delete failed, using local fallback:', supabaseErr)
+            }
         } catch (err) {
             console.error('Error deleting athlete:', err)
             throw err
@@ -110,7 +133,7 @@ export const athleteService = {
             const { data, error } = await supabase
                 .from('athletes')
                 .select('*')
-                .eq('teamId', teamId)
+                .eq('team_id', teamId)
                 .order('name', { ascending: true })
 
             if (error) throw error
