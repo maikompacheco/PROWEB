@@ -104,7 +104,8 @@ export default function Athletes() {
 
       <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {filteredAthletes.map(athlete => (
-          <Card key={athlete.id} className={`card-hover border ${theme === 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
+          <Card key={athlete.id} fullHeight className={`card-hover border ${theme === 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
+            {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h3 className={`text-lg font-bold ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
@@ -117,7 +118,8 @@ export default function Athletes() {
               <Badge variant="secondary">{athlete.position}</Badge>
             </div>
 
-            <div className={`space-y-3 mb-4 py-3 border-t ${theme === 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
+            {/* Body - Grows to fill available space */}
+            <div className={`space-y-3 py-3 border-t flex-grow ${theme === 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
               <div className="flex justify-between text-sm">
                 <span className={theme === 'dark' ? 'text-slate-500' : 'text-slate-600'}>
                   Idade:
@@ -146,7 +148,8 @@ export default function Athletes() {
               )}
             </div>
 
-            <div className="flex gap-2">
+            {/* Footer - Always at bottom */}
+            <div className="flex gap-2 mt-4">
               <Button variant="secondary" size="sm" className="flex-1">
                 Editar
               </Button>

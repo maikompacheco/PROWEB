@@ -5,18 +5,21 @@ interface CardProps {
     className?: string
     hover?: boolean
     onClick?: () => void
+    fullHeight?: boolean
 }
 
 export default function Card({
     children,
     className = '',
     hover = false,
-    onClick
+    onClick,
+    fullHeight = false
 }: CardProps) {
     const baseClass = hover ? 'card-hover' : 'card'
+    const heightClass = fullHeight ? 'h-full flex flex-col' : ''
     return (
         <div
-            className={`${baseClass} ${className}`}
+            className={`${baseClass} ${heightClass} ${className}`}
             onClick={onClick}
         >
             {children}
