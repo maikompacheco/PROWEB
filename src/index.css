@@ -133,4 +133,207 @@
     * {
         @apply box-border;
     }
+
+    /* ====== DIALOG & MODAL ====== */
+    .dialog-overlay {
+        @apply fixed inset-0 z-40 transition-opacity duration-200;
+    }
+
+    html[data-theme='dark'] .dialog-overlay {
+        @apply bg-black/50;
+    }
+
+    html[data-theme='light'] .dialog-overlay {
+        @apply bg-black/30;
+    }
+
+    .dialog-content {
+        @apply relative z-50 max-w-md w-full rounded-2xl p-6 shadow-2xl transition-all duration-300;
+    }
+
+    html[data-theme='dark'] .dialog-content {
+        @apply bg-slate-800 border border-slate-700 text-slate-50;
+    }
+
+    html[data-theme='light'] .dialog-content {
+        @apply bg-white border border-slate-200 text-slate-950;
+    }
+
+    /* ====== ALERT ====== */
+    .alert {
+        @apply px-4 py-3 rounded-lg border-l-4 transition-all duration-200;
+    }
+
+    html[data-theme='dark'] .alert {
+        @apply bg-slate-800 text-slate-50;
+    }
+
+    html[data-theme='light'] .alert {
+        @apply bg-slate-50 text-slate-950;
+    }
+
+    .alert-success {
+        @apply border-l-green-500;
+    }
+
+    html[data-theme='dark'] .alert-success {
+        @apply bg-green-900/30;
+    }
+
+    html[data-theme='light'] .alert-success {
+        @apply bg-green-50;
+    }
+
+    .alert-error {
+        @apply border-l-red-500;
+    }
+
+    html[data-theme='dark'] .alert-error {
+        @apply bg-red-900/30;
+    }
+
+    html[data-theme='light'] .alert-error {
+        @apply bg-red-50;
+    }
+
+    .alert-warning {
+        @apply border-l-yellow-500;
+    }
+
+    html[data-theme='dark'] .alert-warning {
+        @apply bg-yellow-900/30;
+    }
+
+    html[data-theme='light'] .alert-warning {
+        @apply bg-yellow-50;
+    }
+
+    .alert-info {
+        @apply border-l-blue-500;
+    }
+
+    html[data-theme='dark'] .alert-info {
+        @apply bg-blue-900/30;
+    }
+
+    html[data-theme='light'] .alert-info {
+        @apply bg-blue-50;
+    }
+
+    /* ====== SIDEBAR ====== */
+    .sidebar {
+        @apply h-full transition-all duration-300;
+    }
+
+    html[data-theme='dark'] .sidebar {
+        @apply bg-slate-900 border-slate-800 text-slate-50;
+    }
+
+    html[data-theme='light'] .sidebar {
+        @apply bg-white border-slate-200 text-slate-950;
+    }
+
+    .sidebar-item {
+        @apply px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer;
+    }
+
+    html[data-theme='dark'] .sidebar-item {
+        @apply hover:bg-slate-800 active:bg-slate-700;
+    }
+
+    html[data-theme='light'] .sidebar-item {
+        @apply hover:bg-slate-100 active:bg-slate-200;
+    }
+
+    .sidebar-item-active {
+        @apply font-semibold;
+    }
+
+    html[data-theme='dark'] .sidebar-item-active {
+        @apply bg-blue-600/30 text-blue-400;
+    }
+
+    html[data-theme='light'] .sidebar-item-active {
+        @apply bg-blue-100 text-blue-600;
+    }
+
+    /* ====== TABLE ====== */
+    .table-header {
+        @apply font-semibold;
+    }
+
+    html[data-theme='dark'] .table-header {
+        @apply bg-slate-800 text-slate-50;
+    }
+
+    html[data-theme='light'] .table-header {
+        @apply bg-slate-100 text-slate-950;
+    }
+
+    .table-row {
+        @apply border-t transition-colors duration-200;
+    }
+
+    html[data-theme='dark'] .table-row {
+        @apply border-slate-700 hover:bg-slate-800/50;
+    }
+
+    html[data-theme='light'] .table-row {
+        @apply border-slate-200 hover:bg-slate-50;
+    }
+
+    /* ====== BADGE ====== */
+    .badge {
+        @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold;
+    }
+
+    html[data-theme='dark'] .badge {
+        @apply bg-slate-700 text-slate-100;
+    }
+
+    html[data-theme='light'] .badge {
+        @apply bg-slate-200 text-slate-900;
+    }
+
+    .badge-success {
+        @apply bg-green-600 text-white;
+    }
+
+    .badge-error {
+        @apply bg-red-600 text-white;
+    }
+
+    .badge-warning {
+        @apply bg-yellow-600 text-white;
+    }
+
+    .badge-info {
+        @apply bg-blue-600 text-white;
+    }
+
+    /* ====== TOOLTIP ====== */
+    .tooltip {
+        @apply absolute z-50 px-2 py-1 rounded text-xs font-medium whitespace-nowrap opacity-0 pointer-events-none transition-opacity duration-200;
+    }
+
+    html[data-theme='dark'] .tooltip {
+        @apply bg-slate-700 text-slate-50;
+    }
+
+    html[data-theme='light'] .tooltip {
+        @apply bg-slate-800 text-slate-50;
+    }
+
+    /* ====== PLACEHOLDER ====== */
+    .skeleton {
+        @apply animate-pulse;
+    }
+
+    html[data-theme='dark'] .skeleton {
+        @apply bg-slate-700;
+    }
+
+    html[data-theme='light'] .skeleton {
+        @apply bg-slate-300;
+    }
 }

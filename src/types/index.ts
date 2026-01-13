@@ -14,7 +14,32 @@ export enum DominantFoot {
 export enum UserRole {
     ADMIN = 'admin',
     COORDINATOR = 'coordenador',
-    COACH = 'treinador'
+    COACH = 'treinador',
+    SCHOOL_MANAGER = 'gerente_escola'
+}
+
+export enum CoachRole {
+    FIELD_COACH = 'tecnico_campo',
+    GOALKEEPER_COACH = 'tecnico_goleiro',
+    PHYSICAL_TRAINER = 'preparador_fisico',
+    NUTRITIONIST = 'nutricionista',
+    PSYCHOLOGIST = 'psicólogo',
+    DIRECTOR = 'diretor_tecnico'
+}
+
+export enum LicenseLevel {
+    BASIC = 'basico',
+    INTERMEDIATE = 'intermediario',
+    ADVANCED = 'avancado',
+    PROFESSIONAL = 'profissional',
+    SPECIALIST = 'especialista'
+}
+
+export enum LicenseStatus {
+    VALID = 'valida',
+    EXPIRED = 'expirada',
+    PENDING = 'pendente',
+    REVOKED = 'revogada'
 }
 
 // ====== ATHLETE TYPES ======
@@ -95,7 +120,15 @@ export interface Team {
     id: string
     name: string
     school?: string
+    category?: string // Sub-14, Sub-16, etc.
     players: Athlete[]
+    coaches?: string[] // coach IDs
+    coordinator?: string // coach ID principal
+    schedule?: {
+        trainingDays: string[] // "segunda", "quarta", "sexta"
+        location: string
+        time: string // "14:30"
+    }
     createdAt?: string
     updatedAt?: string
 }
@@ -111,15 +144,46 @@ export interface Training {
 }
 
 // ====== COACH/TRAINER TYPES ======
+export interface CoachLicense {
+    id: string
+    coachId: string
+    licenseType: string // e.g., "CBV", "FIFA", "AFA"
+    level: LicenseLevel
+    issueDate: string // ISO date
+    expiryDate: string // ISO date
+    status: LicenseStatus
+    certificateNumber?: string
+    issuingOrganization?: string
+    verificationUrl?: string
+    lastVerified?: string
+}
+
+export interface CoachPermissions {
+    canEvaluateAthletes: boolean
+    canManageTeams: boolean
+    canAccessReports: boolean
+    canManageOtherCoaches: boolean
+    canAccessFinances: boolean
+    canApproveAttendance: boolean
+    customPermissions?: Record<string, boolean>
+}
+
 export interface Coach {
     id: string
     name: string
     email: string
-    specialization?: string // e.g., "Goleiro", "Técnico de Campo"
+    phone?: string
+    role: CoachRole
     teamsAssigned?: string[] // team IDs
     schoolId?: string
-    licenseLevel?: 'amateur' | 'professional' | 'specialist'
+    licenses?: CoachLicense[] // Array de licenças
+    permissions?: CoachPermissions // Controle granular
+    yearsExperience?: number
     bio?: string
+    certifications?: string[] // Lista de certificações
+    languagesSpoken?: string[] // Idiomas
+    photoUrl?: string
+    status: 'active' | 'inactive' | 'suspended'
     createdAt?: string
     updatedAt?: string
 }
@@ -128,16 +192,37 @@ export interface Coach {
 export interface AthleteInsights {
     id: string
     athleteId: string
+    seasonYear: number // 2024, 2025, etc
     technicalStrengths: string[] // e.g., ["Passe preciso", "Visão de jogo"]
     improvementAreas: string[] // e.g., ["Velocidade", "Defesa"]
     technicalNotes: string // Observações técnicas
     behavioralNotes?: string // Comportamento, liderança, etc.
+    potentialLevel?: 'baixo' | 'medio' | 'alto' | 'excepcional' // Para IA
+    recommendedTraining?: string[] // Sugestões de treino
+    aiAnalysis?: {
+        predictedGrowth?: number // percentual
+        competitionLevel?: string
+        recommendedPositions?: string[]
+        trainingFocus?: string[]
+    }
     lastUpdated: string // ISO date
     updatedBy: string // coach ID
     ageGradeInsights?: Record<string, string> // Por faixa etária/categoria
 }
 
 // ====== USER/AUTH TYPES ======
+export interface UserPermissions {
+    canView: boolean
+    canEdit: boolean
+    canEvaluate: boolean
+    canManageTeams: boolean
+    canManageCoaches: boolean
+    canAccessReports: boolean
+    canManageAttendance: boolean
+    canAccessFinances: boolean
+    canDeleteData: boolean
+}
+
 export interface User {
     id: string
     name: string
@@ -145,13 +230,10 @@ export interface User {
     role: UserRole
     schoolId?: string
     coachId?: string // Se o usuário é um treinador
-    permissions?: {
-        canView?: boolean
-        canEdit?: boolean
-        canEvaluate?: boolean
-        canManageTeams?: boolean
-        canManageCoaches?: boolean
-    }
+    permissions?: UserPermissions
+    profilePhotoUrl?: string
+    lastLogin?: string
+    status: 'active' | 'inactive' | 'suspended'
     createdAt?: string
     updatedAt?: string
 }
