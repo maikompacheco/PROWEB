@@ -29,15 +29,23 @@ const AppContext = createContext<AppContextType | undefined>(undefined)
 
 // Sample data for testing
 const SAMPLE_ATHLETES: Athlete[] = [
-    { id: '1', name: 'João Silva', age: 17, school: 'Escola A', position: 'Atacante', teamId: 't1', tracking: { lastSeen: '2026-01-12T10:00:00Z', gps: { lat: -23.5, lng: -46.6 }, heartRate: 72 } },
-    { id: '2', name: 'Carlos Pereira', age: 16, school: 'Escola B', position: 'Goleiro', teamId: 't2', tracking: { lastSeen: '2026-01-11T12:00:00Z', gps: null, heartRate: null } },
-    { id: '3', name: 'Lucas Martins', age: 18, school: 'Escola A', position: 'Defesa', teamId: 't1', tracking: { lastSeen: '2026-01-12T09:30:00Z', gps: { lat: -23.5, lng: -46.6 }, heartRate: 68 } },
+    { id: '1', name: 'João Silva', age: 17, club: 'Escola A', position: 'Atacante', teamId: 't1', tracking: { lastSeen: '2026-01-12T10:00:00Z', gps: { lat: -23.5, lng: -46.6 }, heartRate: 72 } },
+    { id: '2', name: 'Carlos Pereira', age: 16, club: 'Escola B', position: 'Goleiro', teamId: 't2', tracking: { lastSeen: '2026-01-11T12:00:00Z', gps: null, heartRate: null } },
+    { id: '3', name: 'Lucas Martins', age: 18, club: 'Escola A', position: 'Defesa', teamId: 't1', tracking: { lastSeen: '2026-01-12T09:30:00Z', gps: { lat: -23.5, lng: -46.6 }, heartRate: 68 } },
+    { id: '4', name: 'Maria Santos', age: 16, club: 'Escola A', position: 'Meia', teamId: 't1', tracking: { lastSeen: '2026-01-12T10:30:00Z', gps: { lat: -23.5, lng: -46.6 }, heartRate: 65 } },
+    { id: '5', name: 'Pedro Costa', age: 18, club: 'Escola B', position: 'Zagueiro', teamId: 't2', tracking: { lastSeen: '2026-01-12T08:00:00Z', gps: { lat: -23.55, lng: -46.65 }, heartRate: 70 } },
+    { id: '6', name: 'Ana Oliveira', age: 17, club: 'Escola B', position: 'Goleira', teamId: 't2', tracking: { lastSeen: '2026-01-11T14:00:00Z', gps: null, heartRate: null } },
+    { id: '7', name: 'Beatriz Lima', age: 16, club: 'Escola C', position: 'Atacante', teamId: 't3', tracking: { lastSeen: '2026-01-12T09:00:00Z', gps: { lat: -23.52, lng: -46.62 }, heartRate: 71 } },
+    { id: '8', name: 'Lucas Alves', age: 17, club: 'Escola D', position: 'Meia-Volante', teamId: 't1', tracking: { lastSeen: '2026-01-12T11:00:00Z', gps: { lat: -23.5, lng: -46.6 }, heartRate: 69 } },
+    { id: '9', name: 'Fernanda Dias', age: 18, club: 'Escola D', position: 'Ponta', teamId: undefined, tracking: { lastSeen: '2026-01-10T15:00:00Z', gps: null, heartRate: null } },
+    { id: '10', name: 'Rafael Santos', age: 15, club: 'Escola C', position: 'Lateral', teamId: undefined, tracking: { lastSeen: '2026-01-12T13:00:00Z', gps: { lat: -23.52, lng: -46.62 }, heartRate: 73 } },
 ]
 
 const SAMPLE_TEAMS: Team[] = [
-    { id: 't1', name: 'Time Escolar A', school: 'Escola A', players: [] },
-    { id: 't2', name: 'Time Escolar B', school: 'Escola B', players: [] },
-    { id: 't3', name: 'Time Escolar C', school: 'Escola C', players: [] }
+    { id: 't1', name: 'Sub-14 - Equipe A', category: 'sub_14', players: [] },
+    { id: 't2', name: 'Sub-15 - Equipe B', category: 'sub_15', players: [] },
+    { id: 't3', name: 'Sub-17 - Equipe C', category: 'sub_17', players: [] },
+    { id: 't4', name: 'Sub-20 - Equipe D', category: 'sub_20', players: [] }
 ]
 
 export function AppProvider({ children }: { children: ReactNode }) {

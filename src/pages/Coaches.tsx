@@ -96,7 +96,7 @@ export default function CoachesPage() {
         : coaches.filter(c => c.role === filterRole)
 
     return (
-        <div className={`min-h-screen ${theme === 'dark' ? 'bg-slate-950' : 'bg-slate-50'}`}>
+        <div className="min-h-full">
             <Header />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

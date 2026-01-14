@@ -238,33 +238,99 @@ export async function initializeDatabase() {
         {
             name: 'João Silva',
             age: 17,
-            school: 'Escola A',
+            club: 'Santos FC',
             position: 'Atacante',
+            category: 'Sub-17',
             teamId: undefined,
             tracking: { lastSeen: new Date().toISOString(), gps: { lat: -23.5, lng: -46.6 }, heartRate: 72 }
         },
         {
             name: 'Carlos Pereira',
             age: 16,
-            school: 'Escola B',
+            club: 'Palmeiras',
             position: 'Goleiro',
+            category: 'Sub-16',
             teamId: undefined,
             tracking: { lastSeen: new Date().toISOString(), gps: null, heartRate: null }
         },
         {
             name: 'Lucas Martins',
             age: 18,
-            school: 'Escola A',
+            club: 'São Paulo FC',
             position: 'Defesa',
+            category: 'Sub-18',
             teamId: undefined,
             tracking: { lastSeen: new Date().toISOString(), gps: { lat: -23.5, lng: -46.6 }, heartRate: 68 }
+        },
+        {
+            name: 'Maria Santos',
+            age: 15,
+            club: 'Corinthians',
+            position: 'Meia',
+            category: 'Sub-15',
+            teamId: undefined,
+            tracking: { lastSeen: new Date().toISOString(), gps: null, heartRate: null }
+        },
+        {
+            name: 'Pedro Costa',
+            age: 14,
+            club: 'Flamengo',
+            position: 'Zagueiro',
+            category: 'Sub-14',
+            teamId: undefined,
+            tracking: { lastSeen: new Date().toISOString(), gps: null, heartRate: null }
+        },
+        {
+            name: 'Ana Oliveira',
+            age: 16,
+            club: 'Internacional',
+            position: 'Goleira',
+            category: 'Sub-16',
+            teamId: undefined,
+            tracking: { lastSeen: new Date().toISOString(), gps: null, heartRate: null }
+        },
+        {
+            name: 'Roberto Lima',
+            age: 17,
+            club: 'Grêmio',
+            position: 'Lateral',
+            category: 'Sub-17',
+            teamId: undefined,
+            tracking: { lastSeen: new Date().toISOString(), gps: null, heartRate: null }
+        },
+        {
+            name: 'Juliana Ferreira',
+            age: 15,
+            club: 'Atlético-MG',
+            position: 'Atacante',
+            category: 'Sub-15',
+            teamId: undefined,
+            tracking: { lastSeen: new Date().toISOString(), gps: null, heartRate: null }
+        },
+        {
+            name: 'Felipe Souza',
+            age: 16,
+            club: 'Vasco da Gama',
+            position: 'Volante',
+            category: 'Sub-16',
+            teamId: undefined,
+            tracking: { lastSeen: new Date().toISOString(), gps: null, heartRate: null }
+        },
+        {
+            name: 'Beatriz Alves',
+            age: 14,
+            club: 'Botafogo',
+            position: 'Meia',
+            category: 'Sub-14',
+            teamId: undefined,
+            tracking: { lastSeen: new Date().toISOString(), gps: null, heartRate: null }
         }
     ]
 
     const initialTeams: Omit<Team, 'id'>[] = [
-        { name: 'Time Escolar A', school: 'Escola A', players: [] },
-        { name: 'Time Escolar B', school: 'Escola B', players: [] },
-        { name: 'Time Escolar C', school: 'Escola C', players: [] }
+        { name: 'Sub-14 - Equipe A', category: 'sub_14', players: [] },
+        { name: 'Sub-15 - Equipe B', category: 'sub_15', players: [] },
+        { name: 'Sub-17 - Equipe C', category: 'sub_17', players: [] }
     ]
 
     for (const athlete of initialAthletes) {

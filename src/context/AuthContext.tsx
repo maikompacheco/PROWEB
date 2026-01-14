@@ -21,7 +21,7 @@ interface RegisterData {
     name: string
     email: string
     password: string
-    school?: string
+    club?: string
     role?: 'coach' | 'admin' | 'athlete'
 }
 
@@ -145,7 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                                 email: data.email,
                                 full_name: data.name,
                                 role: data.role || 'coach',
-                                school: data.school
+                                club: data.club
                             }])
 
                         if (profileError) throw new Error(`Profile error: ${profileError.message}`)

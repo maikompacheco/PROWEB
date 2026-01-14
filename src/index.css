@@ -11,11 +11,11 @@
     }
 
     html[data-theme='dark'] {
-        @apply bg-slate-950 text-slate-100;
+        @apply bg-neutral-950 text-neutral-50;
     }
 
     html[data-theme='light'] {
-        @apply bg-slate-50 text-slate-950;
+        @apply bg-neutral-50 text-neutral-950;
     }
 
     body {
@@ -46,88 +46,72 @@
     html[data-theme='light'] h4,
     html[data-theme='light'] h5,
     html[data-theme='light'] h6 {
-        @apply text-slate-950;
+        @apply text-slate-900;
     }
 }
 
 @layer components {
 
-    /* Primary Button */
+    /* Primary Button - Novo Design System */
     .btn-primary {
-        @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+        @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus:ring-2 focus:ring-primary-400 focus:ring-opacity-50;
     }
 
-    html[data-theme='dark'] .btn-primary {
-        @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
-    }
-
-    html[data-theme='light'] .btn-primary {
-        @apply bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50;
-    }
-
-    /* Secondary Button */
+    /* Secondary Button - Novo Design System */
     .btn-secondary {
-        @apply px-6 py-3 rounded-lg font-semibold border-2 transition-all duration-200;
+        @apply px-6 py-3 rounded-lg font-semibold border-2 border-primary-300 text-primary-700 transition-all duration-200 hover:bg-primary-50 active:bg-primary-100 focus:ring-2 focus:ring-primary-400 focus:ring-opacity-50;
     }
 
     html[data-theme='dark'] .btn-secondary {
-        @apply border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-slate-900 focus:ring-2 focus:ring-cyan-500 focus:ring-opacity-50;
+        @apply border-primary-700 text-primary-400 hover:bg-primary-500/10 active:bg-primary-500/20;
     }
 
-    html[data-theme='light'] .btn-secondary {
-        @apply border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50;
-    }
-
-    /* Outline Button */
+    /* Outline Button - Novo Design System */
     .btn-outline {
-        @apply px-6 py-3 rounded-lg font-semibold border-2 transition-all duration-200;
+        @apply px-6 py-3 rounded-lg font-semibold border-2 border-neutral-300 text-neutral-700 transition-all duration-200 hover:border-primary-600 hover:text-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-opacity-50;
     }
 
     html[data-theme='dark'] .btn-outline {
-        @apply border-slate-600 text-slate-100 hover:border-blue-500 hover:text-blue-400 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+        @apply border-neutral-600 text-neutral-200 hover:border-primary-600 hover:text-primary-400;
     }
 
-    html[data-theme='light'] .btn-outline {
-        @apply border-slate-300 text-slate-950 hover:border-blue-500 hover:text-blue-600 focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50;
-    }
-
-    /* Input Field */
+    /* Input Field - Novo Design System */
     .input-field {
         @apply w-full px-4 py-3 rounded-lg border-2 transition-all duration-200;
     }
 
     html[data-theme='dark'] .input-field {
-        @apply bg-slate-800 border-slate-700 text-slate-50 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-30;
+        @apply bg-neutral-800 border-neutral-700 text-neutral-50 placeholder-neutral-500 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-500 focus:ring-opacity-30;
     }
 
     html[data-theme='light'] .input-field {
-        @apply bg-white border-slate-300 text-slate-950 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:ring-opacity-30;
+        @apply bg-white border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-opacity-30;
     }
 
-    /* Card */
+    /* Card - Novo Design System */
     .card {
-        @apply rounded-xl border p-6 shadow-lg transition-all duration-200;
+        @apply rounded-lg border p-6 shadow-sm transition-all duration-200;
     }
 
     html[data-theme='dark'] .card {
-        @apply bg-slate-800 border-slate-700;
+        @apply bg-neutral-900 border-neutral-800;
     }
 
     html[data-theme='light'] .card {
-        @apply bg-white border-slate-200;
+        @apply bg-white border-neutral-200;
     }
 
     /* Card Hover */
     .card-hover {
-        @apply rounded-xl border p-6 shadow-lg transition-all duration-200 cursor-pointer;
+        @apply rounded-lg border p-6 shadow-sm transition-all duration-200 cursor-pointer;
     }
 
     html[data-theme='dark'] .card-hover {
-        @apply bg-slate-800 border-slate-700 hover:shadow-xl hover:border-blue-600;
+        @apply bg-neutral-900 border-neutral-800 hover:shadow-md hover:border-primary-600;
     }
 
     html[data-theme='light'] .card-hover {
-        @apply bg-white border-slate-200 hover:shadow-xl hover:border-blue-500;
+        @apply bg-white border-neutral-200 hover:shadow-md hover:border-primary-600;
     }
 
     * {
@@ -152,11 +136,11 @@
     }
 
     html[data-theme='dark'] .dialog-content {
-        @apply bg-slate-800 border border-slate-700 text-slate-50;
+        @apply bg-neutral-900 border border-neutral-800 text-neutral-50;
     }
 
     html[data-theme='light'] .dialog-content {
-        @apply bg-white border border-slate-200 text-slate-950;
+        @apply bg-white border border-neutral-200 text-neutral-950;
     }
 
     /* ====== ALERT ====== */
@@ -165,55 +149,55 @@
     }
 
     html[data-theme='dark'] .alert {
-        @apply bg-slate-800 text-slate-50;
+        @apply bg-neutral-900 text-neutral-50;
     }
 
     html[data-theme='light'] .alert {
-        @apply bg-slate-50 text-slate-950;
+        @apply bg-neutral-50 text-neutral-950;
     }
 
     .alert-success {
-        @apply border-l-green-500;
+        @apply border-l-success-500;
     }
 
     html[data-theme='dark'] .alert-success {
-        @apply bg-green-900/30;
+        @apply bg-success-900/30;
     }
 
     html[data-theme='light'] .alert-success {
-        @apply bg-green-50;
+        @apply bg-success-50;
     }
 
     .alert-error {
-        @apply border-l-red-500;
+        @apply border-l-error-500;
     }
 
     html[data-theme='dark'] .alert-error {
-        @apply bg-red-900/30;
+        @apply bg-error-900/30;
     }
 
     html[data-theme='light'] .alert-error {
-        @apply bg-red-50;
+        @apply bg-error-50;
     }
 
     .alert-warning {
-        @apply border-l-yellow-500;
+        @apply border-l-warning-500;
     }
 
     html[data-theme='dark'] .alert-warning {
-        @apply bg-yellow-900/30;
+        @apply bg-warning-900/30;
     }
 
     html[data-theme='light'] .alert-warning {
-        @apply bg-yellow-50;
+        @apply bg-warning-50;
     }
 
     .alert-info {
-        @apply border-l-blue-500;
+        @apply border-l-primary-500;
     }
 
     html[data-theme='dark'] .alert-info {
-        @apply bg-blue-900/30;
+        @apply bg-primary-900/30;
     }
 
     html[data-theme='light'] .alert-info {
@@ -335,5 +319,70 @@
 
     html[data-theme='light'] .skeleton {
         @apply bg-slate-300;
+    }
+}
+
+/* ====== ANIMAÇÕES CUSTOM ====== */
+@layer utilities {
+    .fade-in {
+        animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .fade-in-up {
+        animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .scale-in {
+        animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .slide-in-right {
+        animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(32px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }

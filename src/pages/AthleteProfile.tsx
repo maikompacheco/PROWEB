@@ -21,7 +21,7 @@ const sampleAthlete: Athlete = {
     id: '1',
     name: 'João Silva',
     age: 17,
-    school: 'Escola A',
+    club: 'Santos FC',
     position: 'Atacante',
     secondaryPosition: 'Ala',
     dominantFoot: DominantFoot.RIGHT,
@@ -170,7 +170,7 @@ export default function AthleteProfile() {
                 <div>
                     <h1 className="text-3xl sm:text-4xl font-bold text-slate-50">{athlete.name}</h1>
                     <p className="text-slate-400 text-sm sm:text-base">
-                        {athlete.position} • {athlete.category} • {athlete.school}
+                        {athlete.position} • {athlete.category} • {athlete.club}
                     </p>
                 </div>
             </div>

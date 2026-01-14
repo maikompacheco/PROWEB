@@ -15,115 +15,105 @@ export default function Dashboard() {
     const { coaches } = useCoach()
     const navigate = useNavigate()
 
+    const isDark = theme === 'dark'
+
     // Calcular métricas reais
     const totalAthletes = athletes.length
     const totalTeams = teams.length
-    const totalCoaches = coaches.length
     const athletesWithTeam = athletes.filter(a => a.teamId).length
-    const percentageWithTeam = totalAthletes > 0 ? Math.round((athletesWithTeam / totalAthletes) * 100) : 0
+    const unassignedAthletes = totalAthletes - athletesWithTeam
+    const percentageComplete = totalAthletes > 0 ? Math.round((athletesWithTeam / totalAthletes) * 100) : 0
+
+    // Detecção de oportunidades geradas pela IA
+    const aiOpportunities = [
+        unassignedAthletes > 0 && { type: 'warning', message: `${unassignedAthletes} atleta(s) sem equipe. Distribua para melhorar análise.` },
+        totalAthletes > 20 && { type: 'info', message: 'Você tem muitos atletas. Use filtros avançados para organizar.' },
+        totalAthletes === 0 && { type: 'prompt', message: 'Comece importando atletas para usar o sistema.' }
+    ].filter(Boolean)
 
     return (
-        <div className={`space-y-8 p-4 sm:p-6 lg:p-8 ${theme === 'dark' ? 'bg-slate-950' : 'bg-slate-50'}`}>
-            {/* Header */}
-            <div>
-                <h1 className={`text-3xl sm:text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
-                    👋 Bem-vindo, {user?.name || 'Usuário'}!
-                </h1>
-                <p className={theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}>
-                    Painel de controle do BaseONE Sports
-                </p>
+        <div className="min-h-full">
+            {/* Header - Elegante e premium */}
+            <div className="w-full px-8 py-6 border-b border-neutral-700/50 backdrop-blur-sm">
+                <div>
+                    <h1 className="text-4xl font-black bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent tracking-tight">Dashboard</h1>
+                    <p className={`text-sm mt-2 ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
+                        👋 Bem-vindo, <span className="font-semibold">{user?.name}</span> • {new Date().toLocaleDateString('pt-BR', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    </p>
+                </div>
             </div>
 
-            {/* Metrics Grid */}
-            <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                <DashboardCard
-                    icon="👥"
-                    label="Total de Atletas"
-                    value={totalAthletes}
-                    description={`${athletesWithTeam} com equipe`}
-                    variant="primary"
-                />
-                <DashboardCard
-                    icon="⚽"
-                    label="Equipes Ativas"
-                    value={totalTeams}
-                    description={`${teams.length > 0 ? 'Organizadas' : 'Nenhuma ainda'}`}
-                    variant="secondary"
-                />
-                <DashboardCard
-                    icon="🎓"
-                    label="Treinadores"
-                    value={totalCoaches}
-                    description="Coordenadores e especialistas"
-                    variant="success"
-                />
-                <DashboardCard
-                    icon="📊"
-                    label="Cobertura"
-                    value={`${percentageWithTeam}%`}
-                    description="Atletas em equipes"
-                    variant="warning"
-                />
+            {/* Content Area */}
+            <div className="flex-1 px-8 pb-8 space-y-8">
+                {/* 3 KPIs Principais - Premium Style */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+                    <DashboardCard
+                        icon="👥"
+                        label="Total de Atletas"
+                        value={totalAthletes}
+                        description={`${athletesWithTeam} vinculados`}
+                        variant="primary"
+                        onClick={() => navigate('/athletes')}
+                    />
+                    <DashboardCard
+                        icon="⚽"
+                        label="Equipes Ativas"
+                        value={totalTeams}
+                        description={totalTeams > 0 ? `${totalTeams} categoria(s)` : 'Nenhuma configurada'}
+                        variant="secondary"
+                        onClick={() => navigate('/teams')}
+                    />
+                    <DashboardCard
+                        icon="📈"
+                        label="Taxa de Preenchimento"
+                        value={`${percentageComplete}%`}
+                        description={`${athletesWithTeam}/${totalAthletes} atletas`}
+                        variant="success"
+                    />
+                </div>
+
+                {/* Oportunidades Geradas pela IA - Seção Discreta */}
+                {aiOpportunities.length > 0 && (
+                    <div className={`rounded-lg border p-4 ${isDark
+                        ? 'bg-neutral-900 border-neutral-800'
+                        : 'bg-neutral-50 border-neutral-200'
+                        }`}>
+                        <div className="flex items-start gap-3">
+                            <span className="text-xl mt-1">💡</span>
+                            <div className="flex-1">
+                                <p className="font-semibold text-sm mb-3 text-primary-600">Insights - Baseado em IA</p>
+                                <div className="space-y-2">
+                                    {aiOpportunities.map((opp, idx) => (
+                                        <div
+                                            key={idx}
+                                            className={`text-sm px-3 py-2 rounded-md ${opp.type === 'warning'
+                                                ? isDark ? 'bg-warning-500/10 text-warning-400' : 'bg-warning-50 text-warning-700'
+                                                : opp.type === 'info' ? isDark ? 'bg-primary-500/10 text-primary-400' : 'bg-primary-50 text-primary-700'
+                                                    : isDark ? 'bg-success-500/10 text-success-400' : 'bg-success-50 text-success-700'
+                                                }`}
+                                        >
+                                            {opp.message}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Info Box - Informativo sem poluição */}
+                <div
+                    className={`rounded-lg border p-6 text-center ${isDark
+                        ? 'bg-gradient-to-r from-neutral-900 to-neutral-900 border-neutral-800'
+                        : 'bg-gradient-to-r from-primary-50 to-accent-50 border-neutral-200'
+                        }`}
+                >
+                    <h3 className="font-semibold mb-2">Bem-vindo, {user?.name}! 👋</h3>
+                    <p className={`text-sm ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
+                        BaseONE Professional - Organize atletas, equipes e decisões técnicas em um só lugar.
+                    </p>
+                </div>
             </div>
-
-            {/* Quick Actions */}
-            <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3">
-                <Card className={`border-2 ${theme === 'dark' ? 'border-blue-600/50 hover:border-blue-500' : 'border-blue-300 hover:border-blue-400'} transition-all cursor-pointer`}
-                    onClick={() => navigate('/athletes')}>
-                    <h3 className={`text-lg font-bold mb-2 ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
-                        📋 Gerenciar Atletas
-                    </h3>
-                    <p className={`text-sm mb-4 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                        Adicionar e gerenciar seus atletas
-                    </p>
-                    <Button variant="primary" size="sm" className="w-full">
-                        Abrir
-                    </Button>
-                </Card>
-
-                <Card className={`border-2 ${theme === 'dark' ? 'border-cyan-600/50 hover:border-cyan-500' : 'border-cyan-300 hover:border-cyan-400'} transition-all cursor-pointer`}
-                    onClick={() => navigate('/teams')}>
-                    <h3 className={`text-lg font-bold mb-2 ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
-                        ⚽ Gerenciar Equipes
-                    </h3>
-                    <p className={`text-sm mb-4 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                        Organizar equipes e categorias
-                    </p>
-                    <Button variant="secondary" size="sm" className="w-full">
-                        Abrir
-                    </Button>
-                </Card>
-
-                <Card className={`border-2 ${theme === 'dark' ? 'border-emerald-600/50 hover:border-emerald-500' : 'border-emerald-300 hover:border-emerald-400'} transition-all cursor-pointer`}
-                    onClick={() => navigate('/coaches')}>
-                    <h3 className={`text-lg font-bold mb-2 ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
-                        🎓 Gerenciar Treinadores
-                    </h3>
-                    <p className={`text-sm mb-4 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                        Coordenadores e especialistas
-                    </p>
-                    <Button variant="secondary" size="sm" className="w-full">
-                        Abrir
-                    </Button>
-                </Card>
-            </div>
-
-            {/* Info Alerts */}
-            {totalAthletes === 0 && (
-                <Card className={`border ${theme === 'dark' ? 'border-blue-600/30 bg-blue-950/20' : 'border-blue-400/30 bg-blue-50'}`}>
-                    <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-blue-300' : 'text-blue-700'}`}>
-                        💡 <strong>Começar:</strong> Clique em "Gerenciar Atletas" para cadastrar seu primeiro atleta!
-                    </p>
-                </Card>
-            )}
-
-            {totalTeams > 0 && athletesWithTeam === 0 && (
-                <Card className={`border ${theme === 'dark' ? 'border-amber-600/30 bg-amber-950/20' : 'border-amber-400/30 bg-amber-50'}`}>
-                    <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-amber-300' : 'text-amber-700'}`}>
-                        ⚠️ <strong>Atenção:</strong> Você tem equipes mas nenhum atleta associado. Clique em "Gerenciar Atletas" para associar.
-                    </p>
-                </Card>
-            )}
         </div>
     )
 }

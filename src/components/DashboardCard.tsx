@@ -60,10 +60,10 @@ export default function DashboardCard({
 
     return (
         <Card
-            className={`border-2 ${styles.bg} ${styles.border} ${onClick ? 'cursor-pointer hover:shadow-lg transition-all' : ''}`}
+            className={`border ${styles.bg} ${styles.border} ${onClick ? 'cursor-pointer hover:shadow-lg transition-all duration-300' : ''} h-[180px] flex flex-col justify-between`}
             onClick={onClick}
         >
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between h-full">
                 {/* Content */}
                 <div className="flex-1">
                     {/* Icon + Label */}
@@ -75,7 +75,7 @@ export default function DashboardCard({
                     </div>
 
                     {/* Value */}
-                    <p className={`text-3xl sm:text-4xl font-bold mb-2`}>
+                    <p className={`text-3xl sm:text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
                         {value}
                     </p>
 
@@ -91,8 +91,8 @@ export default function DashboardCard({
                 {trend && (
                     <div className={`text-right`}>
                         <div className={`flex items-center gap-1 ${trend === 'up' ? 'text-emerald-500' :
-                                trend === 'down' ? 'text-red-500' :
-                                    'text-slate-500'
+                            trend === 'down' ? 'text-red-500' :
+                                'text-slate-500'
                             }`}>
                             <span>
                                 {trend === 'up' && '↑'}

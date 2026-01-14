@@ -25,7 +25,7 @@ export default function AthleteResumeSection({ athlete }: AthleteResumeSectionPr
                     </div>
                     <div>
                         <p className="text-xs text-slate-400 font-medium">Escola</p>
-                        <p className="text-slate-50 font-semibold">{athlete.school || '-'}</p>
+                        <p className="text-slate-50 font-semibold">{athlete.club || '-'}</p>
                     </div>
                     <div>
                         <p className="text-xs text-slate-400 font-medium">Categoria</p>

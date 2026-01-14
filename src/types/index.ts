@@ -42,6 +42,18 @@ export enum LicenseStatus {
     REVOKED = 'revogada'
 }
 
+// ====== CATEGORIES ======
+export enum AthleteCategory {
+    SUB7 = 'Sub-7',
+    SUB9 = 'Sub-9',
+    SUB11 = 'Sub-11',
+    SUB13 = 'Sub-13',
+    SUB15 = 'Sub-15',
+    SUB17 = 'Sub-17',
+    SUB20 = 'Sub-20',
+    PROFISSIONAL = 'Profissional'
+}
+
 // ====== ATHLETE TYPES ======
 export interface AthletePhysicalData {
     date: string // ISO date
@@ -89,12 +101,13 @@ export interface Athlete {
     id: string
     name: string
     age?: number
-    school?: string
+    club?: string
     position?: string
     secondaryPosition?: string
     dominantFoot?: DominantFoot
-    category?: string // e.g., "Sub 14"
+    category?: AthleteCategory | string // e.g., "Sub-14"
     status?: AthleteStatus
+    avatarUrl?: string
 
     // Physical data (historical)
     height?: number // current height in cm
@@ -119,8 +132,7 @@ export interface Athlete {
 export interface Team {
     id: string
     name: string
-    school?: string
-    category?: string // Sub-14, Sub-16, etc.
+    category?: string // Sub-7, Sub-9, Sub-11, Sub-13, Sub-15, Sub-17, Sub-20, Profissional
     players: Athlete[]
     coaches?: string[] // coach IDs
     coordinator?: string // coach ID principal

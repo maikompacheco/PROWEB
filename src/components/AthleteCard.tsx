@@ -1,118 +1,157 @@
 import React from 'react'
-import Card from './Card'
 import Button from './Button'
 import Badge from './Badge'
-import OnlineOfflineBadge from './OnlineOfflineBadge'
+import Avatar from './Avatar'
 import { Athlete } from '../types'
 import { useTheme } from '../context/ThemeContext'
 
 interface AthleteCardProps {
     athlete: Athlete
-    onEdit: (athlete: Athlete) => void
-    onDelete: (athleteId: string) => void
-    showTeam?: boolean
+    onEdit: (id: string) => void
+    onDelete: (id: string) => void
+    onView: (id: string) => void
+    variant?: 'grid' | 'list'
 }
 
 export default function AthleteCard({
     athlete,
     onEdit,
     onDelete,
-    showTeam = true
+    onView,
+    variant = 'grid'
 }: AthleteCardProps) {
     const { theme } = useTheme()
+    const isDark = theme === 'dark'
 
+    // List variant - Horizontal layout
+    if (variant === 'list') {
+        return (
+            <div className={`flex items-center gap-4 p-4 rounded-lg border transition-colors ${isDark
+                ? 'bg-neutral-900 border-neutral-800 hover:border-primary-600'
+                : 'bg-neutral-50 border-neutral-200 hover:border-primary-600'
+                }`}>
+                <div className="flex-shrink-0">
+                    <Avatar name={athlete.name} size="md" />
+                </div>
+
+                <div className="flex-grow grid grid-cols-4 gap-4 items-center">
+                    <div>
+                        <p className={`font-medium ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                            {athlete.name}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p className={`text-sm ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
+                            {athlete.position || '—'}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p className={`text-sm ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
+                            {athlete.club || '—'}
+                        </p>
+                    </div>
+
+                    <div>
+                        <Badge variant={athlete.teamId ? 'success' : 'warning'}>
+                            {athlete.teamId ? '✓ Vinculado' : 'Sem equipe'}
+                        </Badge>
+                    </div>
+                </div>
+
+                <div className="flex gap-2 flex-shrink-0">
+                    <Button variant="outline" size="sm" onClick={() => onView(athlete.id)}>
+                        Ver
+                    </Button>
+                    <Button variant="secondary" size="sm" onClick={() => onEdit(athlete.id)}>
+                        Editar
+                    </Button>
+                    <button
+                        onClick={() => onDelete(athlete.id)}
+                        className={`px-3 py-2 rounded text-sm font-medium transition-colors ${isDark
+                            ? 'hover:bg-error-600/10 text-error-500'
+                            : 'hover:bg-error-100 text-error-600'
+                            }`}
+                    >
+                        ✕
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    // Grid variant (default)
     return (
-        <Card fullHeight className={`card-hover border ${theme === 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
-            {/* Header */}
-            <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                    <h3 className={`text-lg font-bold ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
-                        {athlete.name}
-                    </h3>
-                    <p className={`text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                        {athlete.school}
-                    </p>
+        <div className={`rounded-lg border overflow-hidden transition-all hover:shadow-lg ${isDark
+            ? 'bg-neutral-900 border-neutral-800'
+            : 'bg-neutral-50 border-neutral-200'
+            }`}>
+            {/* Card Header */}
+            <div className={`p-6 border-b ${isDark ? 'border-neutral-800' : 'border-neutral-200'}`}>
+                <div className="flex justify-center mb-4">
+                    <Avatar name={athlete.name} size="lg" />
                 </div>
-                <Badge variant="secondary">{athlete.position}</Badge>
+                <h3 className={`text-center font-semibold text-lg ${isDark ? 'text-neutral-100' : 'text-neutral-900'
+                    }`}>
+                    {athlete.name}
+                </h3>
             </div>
 
-            {/* Body - Grows to fill available space */}
-            <div className={`space-y-3 py-3 border-t flex-grow ${theme === 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
-                {/* Age */}
-                <div className="flex justify-between text-sm">
-                    <span className={theme === 'dark' ? 'text-slate-500' : 'text-slate-600'}>
-                        Idade:
-                    </span>
-                    <span className={`font-semibold ${theme === 'dark' ? 'text-slate-200' : 'text-slate-950'}`}>
-                        {athlete.age} anos
-                    </span>
+            {/* Card Body */}
+            <div className="p-6 space-y-3">
+                {athlete.position && (
+                    <div className="flex items-center gap-2">
+                        <span className="text-lg">👥</span>
+                        <span className={`text-sm ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
+                            {athlete.position}
+                        </span>
+                    </div>
+                )}
+
+                {athlete.club && (
+                    <div className="flex items-center gap-2">
+                        <span className="text-lg">📍</span>
+                        <span className={`text-sm ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
+                            {athlete.club}
+                        </span>
+                    </div>
+                )}
+
+                {athlete.age && (
+                    <div className="flex items-center gap-2">
+                        <span className="text-lg">📅</span>
+                        <span className={`text-sm ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
+                            {athlete.age} anos
+                        </span>
+                    </div>
+                )}
+
+                <div className="pt-3">
+                    <Badge variant={athlete.teamId ? 'success' : 'warning'}>
+                        {athlete.teamId ? '✓ Vinculado' : 'Sem equipe'}
+                    </Badge>
                 </div>
-
-                {/* Category */}
-                {athlete.category && (
-                    <div className="flex justify-between text-sm">
-                        <span className={theme === 'dark' ? 'text-slate-500' : 'text-slate-600'}>
-                            Categoria:
-                        </span>
-                        <span className={`font-semibold ${theme === 'dark' ? 'text-slate-200' : 'text-slate-950'}`}>
-                            {athlete.category}
-                        </span>
-                    </div>
-                )}
-
-                {/* Team */}
-                {showTeam && athlete.teamId && (
-                    <div className="flex justify-between text-sm">
-                        <span className={theme === 'dark' ? 'text-slate-500' : 'text-slate-600'}>
-                            Equipe:
-                        </span>
-                        <span className={`font-semibold ${theme === 'dark' ? 'text-slate-200' : 'text-slate-950'}`}>
-                            {/* Will be integrated with team context */}
-                            -
-                        </span>
-                    </div>
-                )}
-
-                {/* Online/Offline Status */}
-                <div className="flex justify-between text-sm items-center">
-                    <span className={theme === 'dark' ? 'text-slate-500' : 'text-slate-600'}>
-                        Status:
-                    </span>
-                    <OnlineOfflineBadge lastSeen={athlete.tracking?.lastSeen} />
-                </div>
-
-                {/* Heart Rate */}
-                {athlete.tracking?.heartRate && (
-                    <div className="flex justify-between text-sm">
-                        <span className={theme === 'dark' ? 'text-slate-500' : 'text-slate-600'}>
-                            FC:
-                        </span>
-                        <span className={`font-semibold ${theme === 'dark' ? 'text-slate-200' : 'text-slate-950'}`}>
-                            {athlete.tracking.heartRate} bpm
-                        </span>
-                    </div>
-                )}
             </div>
 
-            {/* Footer - Always at bottom */}
-            <div className="flex gap-2 mt-4">
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => onEdit(athlete)}
-                >
+            {/* Card Footer */}
+            <div className={`p-4 border-t flex gap-2 ${isDark ? 'border-neutral-800' : 'border-neutral-200'}`}>
+                <Button variant="secondary" size="sm" onClick={() => onView(athlete.id)} className="flex-1">
+                    Ver
+                </Button>
+                <Button variant="primary" size="sm" onClick={() => onEdit(athlete.id)} className="flex-1">
                     Editar
                 </Button>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1"
+                <button
                     onClick={() => onDelete(athlete.id)}
+                    className={`px-3 py-2 rounded text-sm font-medium transition-colors ${isDark
+                        ? 'hover:bg-error-600/10 text-error-500'
+                        : 'hover:bg-error-100 text-error-600'
+                        }`}
                 >
-                    Remover
-                </Button>
+                    🗑
+                </button>
             </div>
-        </Card>
+        </div>
     )
 }

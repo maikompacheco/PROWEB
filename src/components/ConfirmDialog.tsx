@@ -38,12 +38,12 @@ export default function ConfirmDialog({
     }
 
     return (
-        <div className="dialog-overlay flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             <div
-                className="absolute inset-0"
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 onClick={onCancel}
             />
-            <div className={`dialog-content max-w-sm w-full ${isDangerous ? 'border-red-500/30' : ''}`}>
+            <div className={`relative rounded-xl border p-6 max-w-sm w-full shadow-2xl ${theme === 'dark' ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200'} ${isDangerous ? 'border-red-500/30' : ''}`}>
                 <h2 className={`text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>
                     {title}
                 </h2>

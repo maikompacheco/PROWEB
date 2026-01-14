@@ -1,5 +1,13 @@
 node_modules/
 dist/
 .env
+.env.*
+.env.local
+
+# Test
+coverage/
+
+# Storybook
+storybook-static/
 .vscode/
 .DS_Store

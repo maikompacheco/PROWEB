@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import Modal from './Modal'
 import Button from './Button'
 import Input from './Input'
@@ -14,9 +14,18 @@ interface TeamEditModalProps {
 }
 
 const TEAM_CATEGORIES = [
+    { label: 'Sub-7', value: 'sub_7' },
+    { label: 'Sub-8', value: 'sub_8' },
+    { label: 'Sub-9', value: 'sub_9' },
+    { label: 'Sub-10', value: 'sub_10' },
+    { label: 'Sub-11', value: 'sub_11' },
+    { label: 'Sub-12', value: 'sub_12' },
+    { label: 'Sub-13', value: 'sub_13' },
     { label: 'Sub-14', value: 'sub_14' },
+    { label: 'Sub-15', value: 'sub_15' },
     { label: 'Sub-16', value: 'sub_16' },
-    { label: 'Sub-18', value: 'sub_18' },
+    { label: 'Sub-17', value: 'sub_17' },
+    { label: 'Sub-20', value: 'sub_20' },
     { label: 'Profissional', value: 'profissional' }
 ]
 
@@ -28,12 +37,14 @@ export default function TeamEditModal({
     onClose
 }: TeamEditModalProps) {
     const { theme } = useTheme()
+    const formId = useId()
     const [formData, setFormData] = useState({
         name: '',
         category: '',
         coordinator: ''
     })
     const [error, setError] = useState<string | null>(null)
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
     // Populate form when team changes
     useEffect(() => {
@@ -57,19 +68,19 @@ export default function TeamEditModal({
         e.preventDefault()
         setError(null)
 
-        // Validation
-        if (!formData.name.trim()) {
-            setError('Nome da equipe é obrigatório')
-            return
-        }
-        if (!formData.category.trim()) {
-            setError('Categoria é obrigatória')
+        const errors: Record<string, string> = {}
+        if (!formData.name.trim()) errors.name = 'Campo obrigatório'
+        if (!formData.category.trim()) errors.category = 'Campo obrigatório'
+        setFieldErrors(errors)
+
+        if (Object.keys(errors).length > 0) {
+            setError('Preencha os campos obrigatórios')
             return
         }
 
         try {
             await onSave({
-                name: formData.name,
+                name: formData.name.trim(),
                 category: formData.category,
                 coordinator: formData.coordinator || undefined,
                 players: team?.players || [],
@@ -87,13 +98,36 @@ export default function TeamEditModal({
             isOpen={isOpen}
             onClose={onClose}
             title={team ? `Editar ${team.name}` : 'Nova Equipe'}
+            description="Defina nome e categoria para organizar os times"
+            footer={(
+                <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        className="sm:min-w-[140px]"
+                        onClick={onClose}
+                        disabled={isLoading}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        className="sm:min-w-[160px]"
+                        isLoading={isLoading}
+                        form={formId}
+                    >
+                        {team ? 'Atualizar equipe' : 'Criar equipe'}
+                    </Button>
+                </div>
+            )}
         >
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            <form id={formId} className="space-y-4" onSubmit={handleSubmit}>
                 {/* Error Alert */}
                 {error && (
                     <div className={`p-3 rounded-lg border ${theme === 'dark'
-                            ? 'bg-red-950/20 border-red-500/30 text-red-300'
-                            : 'bg-red-50 border-red-200 text-red-700'
+                        ? 'bg-red-950/20 border-red-500/30 text-red-300'
+                        : 'bg-red-50 border-red-200 text-red-700'
                         }`}>
                         {error}
                     </div>
@@ -103,9 +137,12 @@ export default function TeamEditModal({
                 <Input
                     label="Nome da Equipe"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value })
+                        if (fieldErrors.name) setFieldErrors(prev => ({ ...prev, name: '' }))
+                    }}
                     placeholder="Ex: Equipe A, Equipe B"
-                    error={error && formData.name === '' ? 'Campo obrigatório' : ''}
+                    error={fieldErrors.name}
                 />
 
                 {/* Category */}
@@ -116,10 +153,13 @@ export default function TeamEditModal({
                     </label>
                     <select
                         value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        onChange={(e) => {
+                            setFormData({ ...formData, category: e.target.value })
+                            if (fieldErrors.category) setFieldErrors(prev => ({ ...prev, category: '' }))
+                        }}
                         className={`w-full px-3 py-2 rounded-lg border transition-colors ${theme === 'dark'
-                                ? 'bg-slate-900 border-slate-700 text-slate-100 focus:border-accent-500 focus:ring-accent-500/20'
-                                : 'bg-white border-slate-300 text-slate-900 focus:border-accent-500 focus:ring-accent-500/20'
+                            ? 'bg-slate-900 border-slate-700 text-slate-100 focus:border-accent-500 focus:ring-accent-500/20'
+                            : 'bg-white border-slate-300 text-slate-900 focus:border-accent-500 focus:ring-accent-500/20'
                             }`}
                     >
                         <option value="">Selecione uma categoria</option>
@@ -129,8 +169,8 @@ export default function TeamEditModal({
                             </option>
                         ))}
                     </select>
-                    {error && formData.category === '' && (
-                        <p className="text-red-500 text-xs mt-1">Campo obrigatório</p>
+                    {fieldErrors.category && (
+                        <p className="text-red-500 text-xs mt-1">{fieldErrors.category}</p>
                     )}
                 </div>
 
@@ -141,27 +181,6 @@ export default function TeamEditModal({
                     onChange={(e) => setFormData({ ...formData, coordinator: e.target.value })}
                     placeholder="Nome do treinador responsável"
                 />
-
-                {/* Actions */}
-                <div className="flex gap-3 mt-6 pt-4 border-t border-slate-700">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="flex-1"
-                        onClick={onClose}
-                        disabled={isLoading}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button
-                        type="submit"
-                        variant="primary"
-                        className="flex-1"
-                        isLoading={isLoading}
-                    >
-                        {team ? 'Atualizar' : 'Criar'}
-                    </Button>
-                </div>
             </form>
         </Modal>
     )

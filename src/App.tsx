@@ -16,6 +16,11 @@ import Dashboard from './pages/Dashboard'
 import Athletes from './pages/Athletes'
 import AthleteProfile from './pages/AthleteProfile'
 import Teams from './pages/Teams'
+import UserProfile from './pages/UserProfile'
+import AIAssistant from './pages/AIAssistant'
+// import CategoriesPage from './pages/Categories'
+import { NotificationProvider } from './context/NotificationContext'
+import { ReactQueryProvider } from './context/ReactQueryProvider'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const { user } = useAuth()
@@ -27,48 +32,77 @@ function AppContent() {
     const { theme } = useTheme()
 
     return (
-        <div className={`min-h-screen ${theme === 'dark' ? 'bg-slate-950 text-slate-50' : 'bg-slate-50 text-slate-950'}`}>
+        <div className={`min-h-screen ${theme === 'dark'
+            ? 'bg-gradient-to-br from-neutral-950 via-blue-950/20 to-neutral-950'
+            : 'bg-gradient-to-br from-neutral-50 via-blue-50/30 to-neutral-50'
+            }`}>
             <Header />
-            <div className="flex h-full">
+            <div className="flex min-h-[calc(100vh-64px)]">
                 {user && <Sidebar />}
-                <main className={`flex-1 ${user ? 'md:ml-0' : ''} p-4 sm:p-6 lg:p-8 w-full`}>
-                    <Routes>
-                        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route
-                            path="/dashboard"
+                <main className={`flex-1 ${user ? 'md:ml-0' : ''}`}>
+                    <div className="p-4 sm:p-6 lg:p-8 w-full">
+                        <Routes>
+                            <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Home />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route
+                                path="/dashboard"
+                                element={
+                                    <ProtectedRoute>
+                                        <Dashboard />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/athletes"
+                                element={
+                                    <ProtectedRoute>
+                                        <Athletes />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/athletes/:athleteId"
+                                element={
+                                    <ProtectedRoute>
+                                        <AthleteProfile />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/teams"
+                                element={
+                                    <ProtectedRoute>
+                                        <Teams />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/ai-assistant"
+                                element={
+                                    <ProtectedRoute>
+                                        <AIAssistant />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/profile"
+                                element={
+                                    <ProtectedRoute>
+                                        <UserProfile />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            {/* <Route
+                            path="/categories"
                             element={
                                 <ProtectedRoute>
-                                    <Dashboard />
+                                    <CategoriesPage />
                                 </ProtectedRoute>
                             }
-                        />
-                        <Route
-                            path="/athletes"
-                            element={
-                                <ProtectedRoute>
-                                    <Athletes />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/athletes/:athleteId"
-                            element={
-                                <ProtectedRoute>
-                                    <AthleteProfile />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/teams"
-                            element={
-                                <ProtectedRoute>
-                                    <Teams />
-                                </ProtectedRoute>
-                            }
-                        />
-                    </Routes>
+                        /> */}
+                        </Routes>
+                    </div>
                 </main>
             </div>
         </div>
@@ -77,20 +111,24 @@ function AppContent() {
 
 export default function App() {
     return (
-        <ThemeProvider>
-            <AuthProvider>
-                <AppProvider>
-                    <PermissionProvider>
-                        <AttendanceProvider>
-                            <EvaluationProvider>
-                                <CoachProvider>
-                                    <AppContent />
-                                </CoachProvider>
-                            </EvaluationProvider>
-                        </AttendanceProvider>
-                    </PermissionProvider>
-                </AppProvider>
-            </AuthProvider>
-        </ThemeProvider>
+        <ReactQueryProvider>
+            <ThemeProvider>
+                <AuthProvider>
+                    <AppProvider>
+                        <PermissionProvider>
+                            <AttendanceProvider>
+                                <EvaluationProvider>
+                                    <CoachProvider>
+                                        <NotificationProvider>
+                                            <AppContent />
+                                        </NotificationProvider>
+                                    </CoachProvider>
+                                </EvaluationProvider>
+                            </AttendanceProvider>
+                        </PermissionProvider>
+                    </AppProvider>
+                </AuthProvider>
+            </ThemeProvider>
+        </ReactQueryProvider>
     )
 }

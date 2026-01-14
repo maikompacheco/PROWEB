@@ -14,11 +14,11 @@ export default function Badge({
     className = ''
 }: BadgeProps) {
     const variantClasses = {
-        primary: 'bg-blue-900/50 text-blue-300 border border-blue-700',
-        secondary: 'bg-cyan-900/50 text-cyan-300 border border-cyan-700',
-        success: 'bg-green-900/50 text-green-300 border border-green-700',
-        warning: 'bg-yellow-900/50 text-yellow-300 border border-yellow-700',
-        error: 'bg-red-900/50 text-red-300 border border-red-700'
+        primary: 'bg-primary-100 text-primary-700 border border-primary-300',
+        secondary: 'bg-field-100 text-field-700 border border-field-300',
+        success: 'bg-field-100 text-field-700 border border-field-300',
+        warning: 'bg-highlight-100 text-highlight-700 border border-highlight-300',
+        error: 'bg-red-100 text-red-700 border border-red-300'
     }
 
     return (

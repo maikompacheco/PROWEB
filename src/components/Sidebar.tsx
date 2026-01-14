@@ -7,6 +7,7 @@ interface NavItem {
     label: string
     path: string
     icon: string
+    badge?: string
 }
 
 export default function Sidebar() {
@@ -15,62 +16,91 @@ export default function Sidebar() {
     const location = useLocation()
     const [isOpen, setIsOpen] = useState(false)
 
+    const isDark = theme === 'dark'
+
     const navItems: NavItem[] = [
         { label: 'Dashboard', path: '/dashboard', icon: '📊' },
-        { label: 'Atletas', path: '/athletes', icon: '🏃' },
-        { label: 'Equipes', path: '/teams', icon: '👥' }
+        { label: 'Atletas', path: '/athletes', icon: '👥' },
+        { label: 'Equipes', path: '/teams', icon: '⚽' },
+        { label: 'Insights', path: '/ai-assistant', icon: '💡' }
     ]
 
     if (!user) return null
 
     return (
         <>
-            {/* Mobile Toggle */}
+            {/* Mobile Toggle Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden fixed top-20 left-4 z-30 p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                className={`md:hidden fixed top-20 left-4 z-50 p-3 rounded-lg transition-all duration-300 ${isDark
+                    ? 'bg-neutral-800 hover:bg-neutral-700 border border-neutral-700'
+                    : 'bg-white hover:bg-neutral-100 border border-neutral-200'
+                    }`}
                 aria-label="Toggle sidebar"
             >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                    className={`w-6 h-6 ${isDark ? 'text-neutral-200' : 'text-neutral-700'}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    {isOpen ? (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    ) : (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    )}
                 </svg>
             </button>
 
             {/* Sidebar */}
             <aside
-                className={`${isOpen ? 'translate-x-0' : '-translate-x-full'
-                    } md:translate-x-0 fixed md:static top-0 left-0 h-screen w-64 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-200'} border-r transition-transform duration-300 z-20 pt-20 md:pt-0`}
+                className={`${isOpen ? 'translate-x-0' : '-translate-x-full'}
+                    md:translate-x-0 fixed md:static top-0 left-0 h-[calc(100vh-64px)] w-64 
+                    ${isDark
+                        ? 'bg-gradient-to-b from-neutral-950 via-blue-950/10 to-neutral-950 border-blue-500/20 shadow-lg shadow-blue-500/5'
+                        : 'bg-gradient-to-b from-neutral-50 via-blue-50/20 to-neutral-50 border-blue-200/40 shadow-lg shadow-blue-200/5'
+                    } 
+                    border-r transition-all duration-300 z-40 pt-20 md:pt-0 flex flex-col`}
             >
-                <nav className="p-4 sm:p-6 space-y-2">
-                    {navItems.map(item => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            onClick={() => setIsOpen(false)}
-                            className={`block px-4 py-3 rounded-lg transition-colors font-medium text-sm ${location.pathname === item.path
-                                ? 'bg-blue-600 text-white shadow-lg'
-                                : theme === 'dark'
-                                    ? 'text-slate-400 hover:text-cyan-400 hover:bg-slate-800'
-                                    : 'text-slate-600 hover:text-blue-600 hover:bg-slate-200'
-                                }`}
-                        >
-                            <span className="mr-3">{item.icon}</span>
-                            {item.label}
-                        </Link>
-                    ))}
+                {/* Navigation */}
+                <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+                    {navItems.map(item => {
+                        const isActive = location.pathname === item.path
+                        return (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                onClick={() => setIsOpen(false)}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-sm font-medium ${isActive
+                                    ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105'
+                                    : isDark
+                                        ? 'text-neutral-400 hover:text-neutral-100 hover:bg-blue-950/40 hover:shadow-lg hover:shadow-blue-500/10'
+                                        : 'text-neutral-600 hover:text-blue-600 hover:bg-blue-100/50 hover:shadow-lg hover:shadow-blue-200/20'
+                                    }`}
+                            >
+                                <span className="text-lg">{item.icon}</span>
+                                <span className="flex-1">{item.label}</span>
+                            </Link>
+                        )
+                    })}
                 </nav>
 
-                {/* User Info */}
-                <div className={`absolute bottom-6 left-6 right-6 p-4 rounded-lg border ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
-                    <p className={`font-semibold text-sm ${theme === 'dark' ? 'text-slate-50' : 'text-slate-950'}`}>{user.name}</p>
-                    <p className={`text-xs capitalize ${theme === 'dark' ? 'text-slate-500' : 'text-slate-600'}`}>{user.role}</p>
+                {/* Footer */}
+                <div
+                    className={`px-4 py-4 border-t text-xs text-center backdrop-blur-sm ${isDark
+                        ? 'border-blue-500/20 bg-blue-950/10'
+                        : 'border-blue-200/40 bg-blue-100/20'
+                        }`}
+                >
+                    <p className={`font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent`}>BaseONE Sports</p>
+                    <p className={`text-xs ${isDark ? 'text-neutral-500' : 'text-neutral-600'} mt-1`}>Professional v1.0</p>
                 </div>
             </aside>
 
             {/* Mobile Overlay */}
             {isOpen && (
                 <div
-                    className="md:hidden fixed inset-0 bg-black/50 z-10 pt-20"
+                    className="md:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-30 pt-20"
                     onClick={() => setIsOpen(false)}
                 />
             )}
